@@ -1,0 +1,16 @@
+total 1856
+-rwxr-xr-x   1 schoe  2022_seoul   50912 May 26 22:25 a.out
+-rw-r--r--   1 schoe  2022_seoul     682 May 25 14:05 fork_test.c
+drwxr-xr-x   4 schoe  2022_seoul     136 May 23 16:12 includes
+-rw-r--r--   1 schoe  2022_seoul     115 May 25 15:40 infile
+drwxr-xr-x  51 schoe  2022_seoul    1734 May 25 14:11 libft
+-rw-r--r--   1 schoe  2022_seoul   49768 May 23 16:12 libft.a
+-rw-r--r--   1 schoe  2022_seoul    2024 May 26 22:25 main.c
+-rw-r--r--   1 schoe  2022_seoul     121 May 26 22:29 outfile
+-rw-r--r--   1 schoe  2022_seoul     549 May 26 22:25 pipex.c
+-rw-r--r--   1 schoe  2022_seoul    1241 May 26 22:24 pipex.h
+-rw-r--r--   1 schoe  2022_seoul  806456 May 26 22:25 pipex.h.gch
+-rw-r--r--   1 schoe  2022_seoul     385 May 23 22:02 printf_test.c
+-rw-r--r--   1 schoe  2022_seoul     203 May 25 13:27 test.c
+-rw-r--r--   1 schoe  2022_seoul      51 May 25 12:24 test.txt
+-rw-r--r--   1 schoe  2022_seoul       0 May 26 22:31 test_pipe
