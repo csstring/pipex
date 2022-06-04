@@ -6,13 +6,13 @@
 #    By: schoe <schoe@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/20 17:04:36 by schoe             #+#    #+#              #
-#    Updated: 2022/06/04 14:27:41 by schoe            ###   ########.fr        #
+#    Updated: 2022/06/04 21:07:24 by schoe            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror -O3
-SRCS = main.c pipex.c
+SRCS = main.c parsing.c
 OBJS = ${SRCS:.c=.o}
 RM = rm -f
 INCLUDE = -I./includes
