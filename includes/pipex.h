@@ -6,7 +6,7 @@
 /*   By: schoe <schoe@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 14:06:10 by schoe             #+#    #+#             */
-/*   Updated: 2022/05/26 22:24:13 by schoe            ###   ########.fr       */
+/*   Updated: 2022/06/04 14:32:56 by schoe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define PIPEX_H
 #include <unistd.h>
 #include <stdio.h>
-#include "./includes/libft.h"
+#include "libft.h"
 #include <fcntl.h>
 #include "pipex.h"
 
@@ -28,5 +28,8 @@ typedef struct s_pipex
 
 void	ft_parent(int *fd, t_pipex *val, char **argv);
 void	ft_child(int *fd, t_pipex *val, char **argv);
+int	ft_access_check(char *cmd, t_pipex *val, int check);
+char	**ft_ev_parsing(char **enpv);
+void	ft_pipex(char **argv, t_pipex *val);
 
 #endif

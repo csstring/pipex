@@ -1,15 +1,10 @@
 #include <unistd.h>
 #include <stdio.h>
-#include "./includes/libft.h"
+#include "libft.h"
 #include <fcntl.h>
 #include "pipex.h"
 
-void	ft_error(char *str)
-{
-	write(2, str, ft_strlen(str));
-	exit(0);
-}
-int	ft_access_check(char *cmd, t_pipex *val)
+int	ft_access_check(char *cmd, t_pipex *val, int check)
 {
 	char	*temp;
 	char	*str;
@@ -24,16 +19,13 @@ int	ft_access_check(char *cmd, t_pipex *val)
 		if (access(str, F_OK) == 0)
 			if (access(str, X_OK) == 0)
 			{
-				if (val -> exe_path[0] == 0)
-					val -> exe_path[0] = str;
-				else
-					val -> exe_path[1] = str;
+				val -> exe_path[check] = str;
 				return (0);
 			}
 		free(str);
 		i++;
 	}
-	ft_error("ERROR: permission denined or file is not exist");
+	perror("file access error ");
 	return (0);
 }
 
@@ -61,7 +53,7 @@ char	**ft_ev_parsing(char **enpv)
 			return (line);
 		}
 	}
-	ft_error("ERROR : env don't have PATH");
+	perror("ENV PATH error ");
 	return (0);
 }
 
@@ -72,13 +64,23 @@ void	ft_pipex(char **argv, t_pipex *val)
 
 	pipe(fd);
 	pid = fork();
+	if (pid < 0)
+	{
+		perror("fork error ");
+		exit(0);
+	}
 	if (pid == 0)//child
 	{
+		close(fd[0]);
 		ft_child(fd, val, argv);
+		close(fd[1]);
 	}
-	else //parent
+	else if (pid > 0)//parent
 	{
+		close(fd[1]);
+		wait(NULL);
 		ft_parent(fd, val, argv);
+		close(fd[0]);
 	}
 }
 
@@ -89,11 +91,14 @@ int	main(int ac, char **av, char **enpv)
 
 	i = 0;
 	if (ac != 5)
+	{
+		perror("wrong input count");
 		return (0);
+	}
 	val.ev = ft_ev_parsing(enpv);
 	ft_av_parsing(av, &val);
-	ft_access_check(val.cmd1[0], &val);
-	ft_access_check(val.cmd2[0], &val);
+	ft_access_check(val.cmd1[0], &val, 0);
+	ft_access_check(val.cmd2[0], &val, 1);
 	ft_pipex(av, &val);
 	return (0);
 }

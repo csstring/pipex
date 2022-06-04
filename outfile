@@ -12,3 +12,4 @@ pipex.h.gch
 printf_test.c
 test.c
 test.txt
+test_pipe
