@@ -6,13 +6,13 @@
 #    By: schoe <schoe@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/20 17:04:36 by schoe             #+#    #+#              #
-#    Updated: 2022/06/04 21:07:24 by schoe            ###   ########.fr        #
+#    Updated: 2022/06/16 20:49:11 by schoe            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC = gcc
-CFLAGS = -Wall -Wextra -Werror -O3
-SRCS = main.c parsing.c
+CC = cc
+CFLAGS = -Wall -Wextra -Werror -O3 
+SRCS = main.c parsing.c ft_cmd.c
 OBJS = ${SRCS:.c=.o}
 RM = rm -f
 INCLUDE = -I./includes

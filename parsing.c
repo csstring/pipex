@@ -6,7 +6,7 @@
 /*   By: schoe <schoe@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/04 21:06:11 by schoe             #+#    #+#             */
-/*   Updated: 2022/06/04 21:11:14 by schoe            ###   ########.fr       */
+/*   Updated: 2022/06/16 18:22:16 by schoe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,22 +40,25 @@ int	ft_access_check(char *cmd, t_pipex *val, int check)
 	return (0);
 }
 
-void	ft_av_parsing(char **argv, t_pipex *val)
+void	ft_av_parsing(t_input *input, t_pipex *val)
 {
-	if (ft_strncmp(argv[2], "awk", 3) == 0)
+	int	ac_temp;
+	int	i;
+
+	i = 0;
+	ac_temp = input->ac;
+	while (ac_temp > 3)
 	{
-		val -> cmd1 = ft_split(argv[2], '\'');
-		val -> cmd1[0] = ft_strtrim(val -> cmd1[0], " ");
-	}
-	else
-		val -> cmd1 = ft_split(argv[2], ' ');
-	if (ft_strncmp(argv[3], "awk", 3) == 0)
-	{
-		val -> cmd2 = ft_split(argv[3], '\'');
-		val -> cmd2[0] = ft_strtrim(val -> cmd2[0], " ");
-	}
-	else
-		val -> cmd2 = ft_split(argv[3], ' ');
+		if (ft_strncmp(input->av[i + 2 + val->check], "awk", 3) == 0)//3개만 비교?
+		{
+			val -> cmd[i] = ft_split(input->av[i + 2], '\'');
+			val -> cmd[i][0] = ft_strtrim(val -> cmd[i][0], " ");
+		}
+		else
+			val -> cmd[i] = ft_split(input->av[i + 2 + val->check], ' ');
+		i++;
+		ac_temp--;
+	}	
 }
 
 char	**ft_ev_parsing(char **enpv)
