@@ -6,7 +6,7 @@
 /*   By: schoe <schoe@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/04 21:05:12 by schoe             #+#    #+#             */
-/*   Updated: 2022/06/16 21:54:38 by schoe            ###   ########.fr       */
+/*   Updated: 2022/06/17 21:55:27 by schoe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	ft_here_doc(t_input *input)
 	int		check;
 
 	input_str = ft_strjoin(input->av[2], "\n");
-	temp = open(input->av[1], O_WRONLY | O_CREAT | O_TRUNC, 0664);
+	temp = open(".temp", O_WRONLY | O_CREAT | O_TRUNC, 0664);
 	dup2(temp, STDOUT_FILENO);
 	check = 0;
 	while (1)
@@ -29,7 +29,6 @@ void	ft_here_doc(t_input *input)
 		str = get_next_line(0);
 		if (str != NULL && ft_strrchr(str, '\n') != NULL)
 			check = 1;
-		//ctrl+d일때 루프 돌려야하나 아니면 재시작?
 		if((check == 1 && str == NULL) || (str != NULL && !ft_strncmp(input_str, str, ft_strlen(input_str) + 1)))
 			break ;
 		if (check == 0 && str == NULL)
@@ -38,36 +37,22 @@ void	ft_here_doc(t_input *input)
 		free(str);
 	}
 	close(temp);
+	free(str);
 	free(input_str);
 }
-
-void	ft_close_fd(pid_t pid, t_pipex *val, int i)
+static void	ft_close_fd2(t_pipex *val, int i, int end_temp)
 {
-	int	end_temp;
-
-	end_temp = val->end;
-	if (pid > 0)
-		while (end_temp > 0)
-		{
-			end_temp--;
-			close(val->fd[end_temp][P_W]);
-			close(val->fd[end_temp][P_R]);
-		}
-	else if (i == 0)
-		while (end_temp > 1)
-		{
-			end_temp--;
-			close(val->fd[end_temp][P_W]);
-			close(val->fd[end_temp][P_R]);
-		}
-	else if	(i == val->end)
+	if	(i == val->end)
+	{
 		while (i - 2 >= 0)
 		{
 			close(val->fd[i - 2][P_W]);
 			close(val->fd[i - 2][P_R]);
 			i--;
-		}	
+		}
+	}
 	else
+	{
 		while (end_temp > 0)
 		{
 			end_temp--;
@@ -76,9 +61,37 @@ void	ft_close_fd(pid_t pid, t_pipex *val, int i)
 			close(val->fd[end_temp][P_W]);
 			close(val->fd[end_temp][P_R]);
 		}
+	}
 }
 
-void	ft_pipex(int ac , t_input *input, t_pipex *val)
+void	ft_close_fd(pid_t pid, t_pipex *val, int i)
+{
+	int	end_temp;
+
+	end_temp = val->end;
+	if (pid > 0)
+	{
+		while (end_temp > 0)
+		{
+			end_temp--;
+			close(val->fd[end_temp][P_W]);
+			close(val->fd[end_temp][P_R]);
+		}
+	}
+	else if (i == 0)
+	{
+		while (end_temp > 1)
+		{
+			end_temp--;
+			close(val->fd[end_temp][P_W]);
+			close(val->fd[end_temp][P_R]);
+		}
+	}
+	else
+		ft_close_fd2(val, i, end_temp);
+}
+
+int	ft_pipex(int ac , t_input *input, t_pipex *val)
 {
 	pid_t	pid;
 	int		i;
@@ -100,12 +113,10 @@ void	ft_pipex(int ac , t_input *input, t_pipex *val)
 		ft_cmd_end(i, val, input);
 	else if (pid == 0)
 		ft_cmd_mid1(i, val, input);
-	else
-	{
-		waitpid(pid, &st, 0);
-		if (val->check == 1)
-			unlink("here_doc");
-	}
+	waitpid(pid, &st, 0);
+	if (val->check == 1)
+		unlink(".temp");
+	return(st>>8 & 0x000000ff);
 }
 
 void	ft_make_pipe(t_input *input, t_pipex *val)
@@ -138,6 +149,11 @@ void	ft_init(t_pipex *val, t_input *input)
 		(input->ac)--;
 		val->check = 1;
 	}
+	if (input->ac < 5)
+	{
+		ft_eprintf("error : wrong input\n");
+		exit(1);
+	}
 	val->exe_path = (char **)malloc(sizeof(char *) * (input->ac - 2));
 	val->cmd = (char ***)malloc(sizeof(char **) * (input->ac - 2));
 	if (!val->cmd || !val->exe_path)
@@ -155,8 +171,8 @@ int	main(int ac, char **av, char **enpv)
 	i = 0;
 	if (ac < 5)
 	{
-		perror("wrong input count");
-		exit(1);
+		ft_eprintf("error : wrong input\n");
+		return (1);
 	}
 	input.ac = ac;
 	input.av = av;
@@ -172,6 +188,5 @@ int	main(int ac, char **av, char **enpv)
 	ft_make_pipe(&input, &val);
 	if (val.check)
 		ft_here_doc(&input);
-	ft_pipex(input.ac, &input, &val);
-	return (0);
+	return (ft_pipex(input.ac, &input, &val));
 }

@@ -1,6 +1,6 @@
 #include "pipex.h"
 #include <fcntl.h>
-
+#include "libft.h"
 void	ft_cmd_end(int i, t_pipex *val, t_input *input)
 {
 	int	temp;
@@ -19,8 +19,7 @@ void	ft_cmd_end(int i, t_pipex *val, t_input *input)
 	}
 	dup2(temp, STDOUT_FILENO);
 	close(temp);
-	if (val->exe_path[i] == 0)
-		exit(1);
+	ft_error_check(i, input, val);
 	execve(val->exe_path[i], val->cmd[i], input->ev);
 }
 
@@ -32,8 +31,7 @@ void	ft_cmd_mid1(int i, t_pipex *val, t_input *input)
 	close(val->fd[i - 1][P_R]);
 	dup2(val->fd[i][P_W], STDOUT_FILENO);
 	close(val->fd[i][P_W]);
-	if (val -> exe_path[i] == 0)
-		exit(1);
+	ft_error_check(i, input, val);
 	execve(val -> exe_path[i], val -> cmd[i], input->ev);
 }
 
@@ -44,7 +42,10 @@ void	ft_cmd_start(int i, t_pipex *val, t_input *input)
 	close(val->fd[i][P_R]);
 	dup2(val->fd[i][P_W], STDOUT_FILENO);
 	close(val->fd[i][P_W]);
-	temp = open(input->av[1], O_RDONLY);
+	if (val->check == 1)
+		temp = open(".temp", O_RDONLY);
+	else
+		temp = open(input->av[1], O_RDONLY);
 	if (temp < 0)
 	{
 		perror("open error : ");
@@ -52,7 +53,6 @@ void	ft_cmd_start(int i, t_pipex *val, t_input *input)
 	}
 	dup2(temp, STDIN_FILENO);
 	close(temp);
-	if (val -> exe_path[i] == 0)
-		exit(1);
+	ft_error_check(i, input, val);
 	execve(val -> exe_path[i], val -> cmd[i], input->ev);
 }

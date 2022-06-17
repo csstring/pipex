@@ -6,7 +6,7 @@
 /*   By: schoe <schoe@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 10:57:26 by schoe             #+#    #+#             */
-/*   Updated: 2022/03/10 15:05:10 by schoe            ###   ########.fr       */
+/*   Updated: 2022/06/17 11:54:29 by schoe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ size_t	ft_strlen(const char *s)
 	int	i;
 
 	i = 0;
+	if (s == NULL)
+		return (0);
 	while (s[i])
 		i++;
 	return (i);

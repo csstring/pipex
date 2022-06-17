@@ -6,7 +6,7 @@
 /*   By: schoe <schoe@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 21:19:00 by schoe             #+#    #+#             */
-/*   Updated: 2022/05/16 12:59:13 by schoe            ###   ########.fr       */
+/*   Updated: 2022/06/17 14:46:46 by schoe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,14 @@ int		ft_xu(unsigned int ud, char type);
 int		ft_di(int i);
 char	*ft_ultoa(size_t n);
 char	*ft_u_convert_base(char *nbr, char *base_from, char *base_to);
+//eprintf
+int		ft_eprintf(const char *arg, ...);
+int		ft_etype(va_list *ap, char type);
+int		ft_ec(char c);
+int		ft_es(char *str);
+int		ft_ep(void *p);
+int		ft_exu(unsigned int ud, char type);
+int		ft_edi(int i);
 //gnl
 char	*ft_get(ssize_t deep, int fd);
 char	*get_next_line(int fd);

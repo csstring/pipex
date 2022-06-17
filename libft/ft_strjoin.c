@@ -6,7 +6,7 @@
 /*   By: schoe <schoe@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 10:55:39 by schoe             #+#    #+#             */
-/*   Updated: 2022/03/17 15:39:14 by schoe            ###   ########.fr       */
+/*   Updated: 2022/06/17 12:01:56 by schoe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,10 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	size_t	s1_len;
 	size_t	s2_len;
 
+	if (s2 == NULL)
+		return (ft_strdup(s1));
+	if (s1 == NULL)
+		return (ft_strdup(s2));
 	s1_len = ft_strlen(s1);
 	s2_len = ft_strlen(s2);
 	temp = (char *)malloc(sizeof(char) * (s1_len + s2_len + 1));

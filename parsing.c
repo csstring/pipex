@@ -6,37 +6,54 @@
 /*   By: schoe <schoe@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/04 21:06:11 by schoe             #+#    #+#             */
-/*   Updated: 2022/06/16 18:22:16 by schoe            ###   ########.fr       */
+/*   Updated: 2022/06/17 22:02:24 by schoe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 #include "libft.h"
-
-int	ft_access_check(char *cmd, t_pipex *val, int check)
+static int ft_access_check2(char *cmd, t_pipex *val, int check, int i)
 {
 	char	*temp;
 	char	*str;
-	int		i;
 
-	i = 0;
-	while (val -> ev[i])
+	if (access(cmd, F_OK) == 0 && access(cmd, X_OK) == 0)
+	{
+		val->exe_path[check] = cmd;
+		return (0);
+	}
+	else
 	{
 		temp = ft_strjoin(val -> ev[i], "/");
 		str = ft_strjoin(temp, cmd);
 		free(temp);
-		if (access(str, F_OK) == 0)
+		if (access(str, F_OK) == 0 && access(str, X_OK) == 0)
 		{
-			if (access(str, X_OK) == 0)
-			{
-				val -> exe_path[check] = str;
-				return (0);
-			}
+			val -> exe_path[check] = str;
+			return (0);
 		}
 		free(str);
+	}
+	return (1);
+}
+
+int	ft_access_check(char *cmd, t_pipex *val, int check)
+{
+	int		i;
+
+	i = 0;
+	if (cmd == NULL)
+	{
+		val->exe_path[check] = NULL;
+		return (0);
+	}
+	while (val -> ev[i])
+	{
+		if (ft_access_check2(cmd, val, check, i) == 0)
+			return (0);
 		i++;
 	}
-	perror("commnd error ");
+	val->exe_path[check] = NULL;
 	return (0);
 }
 
