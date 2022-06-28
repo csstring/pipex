@@ -1,18 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   main_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: schoe <schoe@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/04 21:05:12 by schoe             #+#    #+#             */
-/*   Updated: 2022/06/17 21:55:27 by schoe            ###   ########.fr       */
+/*   Updated: 2022/06/20 14:55:28 by schoe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "pipex_bonus.h"
 #include <fcntl.h>
 #include "libft.h"
+
 void	ft_here_doc(t_input *input)
 {
 	int		temp;
@@ -29,7 +30,8 @@ void	ft_here_doc(t_input *input)
 		str = get_next_line(0);
 		if (str != NULL && ft_strrchr(str, '\n') != NULL)
 			check = 1;
-		if((check == 1 && str == NULL) || (str != NULL && !ft_strncmp(input_str, str, ft_strlen(input_str) + 1)))
+		if ((check == 1 && str == NULL) || (str != NULL && \
+					!ft_strncmp(input_str, str, ft_strlen(input_str) + 1)))
 			break ;
 		if (check == 0 && str == NULL)
 			continue ;
@@ -40,111 +42,12 @@ void	ft_here_doc(t_input *input)
 	free(str);
 	free(input_str);
 }
-static void	ft_close_fd2(t_pipex *val, int i, int end_temp)
-{
-	if	(i == val->end)
-	{
-		while (i - 2 >= 0)
-		{
-			close(val->fd[i - 2][P_W]);
-			close(val->fd[i - 2][P_R]);
-			i--;
-		}
-	}
-	else
-	{
-		while (end_temp > 0)
-		{
-			end_temp--;
-			if (end_temp == i || end_temp == i - 1)
-				continue ;
-			close(val->fd[end_temp][P_W]);
-			close(val->fd[end_temp][P_R]);
-		}
-	}
-}
-
-void	ft_close_fd(pid_t pid, t_pipex *val, int i)
-{
-	int	end_temp;
-
-	end_temp = val->end;
-	if (pid > 0)
-	{
-		while (end_temp > 0)
-		{
-			end_temp--;
-			close(val->fd[end_temp][P_W]);
-			close(val->fd[end_temp][P_R]);
-		}
-	}
-	else if (i == 0)
-	{
-		while (end_temp > 1)
-		{
-			end_temp--;
-			close(val->fd[end_temp][P_W]);
-			close(val->fd[end_temp][P_R]);
-		}
-	}
-	else
-		ft_close_fd2(val, i, end_temp);
-}
-
-int	ft_pipex(int ac , t_input *input, t_pipex *val)
-{
-	pid_t	pid;
-	int		i;
-	int		st;
-
-	i = 0;
-	while (ac > 3)
-	{
-		ac--;
-		pid = fork();
-		if (pid == 0)
-			break ;
-		i++;
-	}
-	ft_close_fd(pid, val, i);
-	if (pid == 0 && i == 0)
-		ft_cmd_start(i, val, input);
-	else if (pid == 0 && i == val->end)
-		ft_cmd_end(i, val, input);
-	else if (pid == 0)
-		ft_cmd_mid1(i, val, input);
-	waitpid(pid, &st, 0);
-	if (val->check == 1)
-		unlink(".temp");
-	return(st>>8 & 0x000000ff);
-}
-
-void	ft_make_pipe(t_input *input, t_pipex *val)
-{
-	int	ac_temp;
-	int	i;
-
-	i = 0;
-	ac_temp = input->ac;
-	val->fd = (int **)malloc(sizeof(int *) * ac_temp - 4);
-	while (ac_temp - 4 > 0)
-	{
-		(val->fd)[i] = (int *)malloc(sizeof(int) * 2);
-		if (pipe(val->fd[i]))
-		{
-			perror("pipe error ");
-			exit(1);
-		}
-		i++;
-		ac_temp--;
-	}
-	val->end = i;
-}
 
 void	ft_init(t_pipex *val, t_input *input)
 {
 	val->check = 0;
-	if (!ft_strncmp(input->av[1], "here_doc", 9) && access("here_doc", F_OK == -1))
+	if (!ft_strncmp(input->av[1], "here_doc", 9) && \
+			access("here_doc", F_OK == -1))
 	{
 		(input->ac)--;
 		val->check = 1;

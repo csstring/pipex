@@ -1,18 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   ft_parsing_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: schoe <schoe@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/04 21:06:11 by schoe             #+#    #+#             */
-/*   Updated: 2022/06/17 22:02:24 by schoe            ###   ########.fr       */
+/*   Created: 2022/06/20 11:53:16 by schoe             #+#    #+#             */
+/*   Updated: 2022/06/20 14:59:16 by schoe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "pipex_bonus.h"
 #include "libft.h"
-static int ft_access_check2(char *cmd, t_pipex *val, int check, int i)
+#include <stdio.h>
+
+static int	ft_access_check2(char *cmd, t_pipex *val, int check, int i)
 {
 	char	*temp;
 	char	*str;
@@ -66,7 +68,8 @@ void	ft_av_parsing(t_input *input, t_pipex *val)
 	ac_temp = input->ac;
 	while (ac_temp > 3)
 	{
-		if (ft_strncmp(input->av[i + 2 + val->check], "awk", 3) == 0)//3개만 비교?
+		if (ft_strncmp(input->av[i + 2 + val->check], "awk ", 4) == 0 || \
+				ft_strncmp(input->av[i + 2 + val->check], "sed ", 4) == 0)
 		{
 			val -> cmd[i] = ft_split(input->av[i + 2], '\'');
 			val -> cmd[i][0] = ft_strtrim(val -> cmd[i][0], " ");

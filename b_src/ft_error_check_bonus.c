@@ -1,20 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_error_check.c                                   :+:      :+:    :+:   */
+/*   ft_error_check_bonus.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: schoe <schoe@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/17 16:58:20 by schoe             #+#    #+#             */
-/*   Updated: 2022/06/17 20:49:36 by schoe            ###   ########.fr       */
+/*   Created: 2022/06/20 11:53:08 by schoe             #+#    #+#             */
+/*   Updated: 2022/06/20 12:10:27 by schoe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "pipex_bonus.h"
 #include "libft.h"
 #include <string.h>
 
-static void	ft_check_file(int i,t_pipex *val, t_input *input)
+static void	ft_check_file(int i, t_pipex *val, t_input *input)
 {
 	int	j;
 
@@ -23,7 +23,8 @@ static void	ft_check_file(int i,t_pipex *val, t_input *input)
 	{
 		if (val->cmd[i][0][j] == '/')
 		{
-			ft_eprintf("bash: %s: %s\n",input->av[i + val->check + 2] ,strerror(2));
+			ft_eprintf("bash: %s: %s\n", input->av[i + val->check + 2], \
+					strerror(2));
 			exit(2);
 		}
 		j++;
@@ -49,7 +50,8 @@ static int	ft_check_dir(int i, t_pipex *val, t_input *input)
 			return (0);
 		j++;
 	}
-	ft_eprintf("bash: %s: %s\n",input->av[i + val->check + 2] ,strerror(21));
+	ft_eprintf("bash: %s: %s\n", input->av[i + val->check + 2], \
+			strerror(21));
 	exit(21);
 }
 
@@ -64,7 +66,8 @@ void	ft_error_check(int i, t_input *input, t_pipex *val)
 	if (val->exe_path[i] == NULL)
 	{
 		ft_check_file(i, val, input);
-		ft_eprintf("bash: %s: command not found\n", input->av[i + val->check + 2]);
+		ft_eprintf("bash: %s: command not found\n", \
+				input->av[i + val->check + 2]);
 		exit(127);
 	}
 }

@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   pipex_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: schoe <schoe@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/25 14:06:10 by schoe             #+#    #+#             */
-/*   Updated: 2022/06/20 14:42:40 by schoe            ###   ########.fr       */
+/*   Created: 2022/06/20 12:09:13 by schoe             #+#    #+#             */
+/*   Updated: 2022/06/20 14:42:43 by schoe            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
+#ifndef PIPEX_BONUS_H
+# define PIPEX_BONUS_H
 # define P_W	1
 # define P_R	0
 # include <unistd.h>
@@ -23,6 +23,7 @@ typedef struct s_pipex
 	char	**exe_path;
 	int		**fd;
 	int		end;
+	int		check;
 }	t_pipex;
 
 typedef struct s_input
@@ -47,5 +48,6 @@ void	ft_make_pipe(t_input *input, t_pipex *val);
 void	ft_close_fd(pid_t pid, t_pipex *val, int i);
 int		ft_pipex(int ac, t_input *input, t_pipex *val);
 //main
+void	ft_here_doc(t_input *input);
 void	ft_init(t_pipex *val, t_input *input);
 #endif

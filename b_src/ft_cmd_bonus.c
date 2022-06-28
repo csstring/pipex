@@ -1,6 +1,20 @@
-#include "pipex.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_cmd_bonus.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: schoe <schoe@student.42seoul.kr>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/20 11:52:52 by schoe             #+#    #+#             */
+/*   Updated: 2022/06/20 12:40:01 by schoe            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "pipex_bonus.h"
 #include <fcntl.h>
 #include "libft.h"
+#include <stdio.h>
+
 void	ft_cmd_end(int i, t_pipex *val, t_input *input)
 {
 	int	temp;
@@ -9,9 +23,11 @@ void	ft_cmd_end(int i, t_pipex *val, t_input *input)
 	dup2(val->fd[i - 1][P_R], STDIN_FILENO);
 	close(val->fd[i - 1][P_R]);
 	if (val->check == 1)
-		temp = open(input->av[input->ac - 1 + val->check], O_WRONLY | O_APPEND | O_CREAT, 0664);
+		temp = open(input->av[input->ac - 1 + val->check], \
+				O_WRONLY | O_APPEND | O_CREAT, 0664);
 	else
-		temp = open(input->av[input->ac - 1], O_WRONLY | O_CREAT | O_TRUNC, 0664);
+		temp = open(input->av[input->ac - 1], \
+				O_WRONLY | O_CREAT | O_TRUNC, 0664);
 	if (temp < 0)
 	{
 		perror("open error : ");
